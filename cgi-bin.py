@@ -43,33 +43,33 @@ epson_information = {
     "OFF": 'Beamer off:PWR OFF:#F00000'
 }
 
+kindermann_commands = ['ON', 'HDMI1', 'HDMI2', 'VGA']
+
 def get_html(key):
     # Rueckmeldung an rufende Seite
     time = strftime('%H:%M:%S', localtime())
     color = get_color(key)
+    message = get_message(key)
     return '<font size="3">Last Action at {}</font>' \
-           '<br><font size="5" color="{}">{}</font>'.format(time, color, 'test')
+           '<br><font size="5" color="{}">{}</font>'.format(time, color, message)
 
 
 def get_color(key):
     return epson_information[key][2]
 
 
-kindermann_commands = ['ON', 'HDMI1', 'HDMI2', 'VGA']
+def get_message(key):
+    return epson_information[key][0]
 
-print("Content-Type: text/html")  # HTML is following
-print()
-arguments = cgi.FieldStorage()
-if 'Funktion' in arguments:
-    value = arguments['Funktion'].value
+
+def execute_funktion(key):
     epson = Epson()
     kindermann = Kindermann()
 
-    if value not in kindermann_commands:
-
-        epson.send_command(arguments['Funktion'].value)
+    if key not in kindermann_commands:
+        epson.send_command(key)
     else:
-        if value == 'ON':
+        if key == 'ON':
             kindermann.send_command('SHOW_ME')
             epson.send_command('ON')
             epson.send_command('ON')
@@ -79,6 +79,14 @@ if 'Funktion' in arguments:
             epson.send_command('ON')
             epson.send_command('HDBASET')
         else:
-            kindermann.send_command(value)
+            kindermann.send_command(key)
             epson.send_command('HDBASET')
-    print(get_html(value))
+    print(get_html(key))
+
+
+print("Content-Type: text/html")  # HTML is following
+print()
+arguments = cgi.FieldStorage()
+if 'Funktion' in arguments:
+    value = arguments['Funktion'].value
+    execute_funktion(value)
