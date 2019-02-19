@@ -8,6 +8,7 @@ commands = {
     'show_me': [0x7B, 0x7B, 0x08, 0x00, 0x01, 0x00, 0xF9, 0x7D, 0x7D],
 }
 
+
 class Kindermann:
     port = '/dev/ttyUSB0'
 
@@ -51,9 +52,8 @@ class Kindermann:
 
     def send_command(self):
         ser = serial.Serial(
-            port='/dev/ttyUSB0',
+            port=self.port,
             baudrate=115200,
-            #        baudrate=9600,
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS
