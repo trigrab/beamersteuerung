@@ -42,11 +42,10 @@ epson_information = {
 
 
 class Epson:
-    port = '/dev/ttyUSB0'
-    baudrate = 9600
 
-    def __init__(self):
-        pass
+    def __init__(self, baudrate=9600, tty_port='/dev/ttyUSB0'):
+        self.baudrate = baudrate
+        self.port = tty_port
 
     def send_command(self, key):
         ser = serial.Serial(

@@ -11,10 +11,9 @@ commands = {
 
 
 class Kindermann:
-    port = '/dev/ttyUSB0'
-
-    def __init__(self):
-        pass
+    def __init__(self, baudrate=115200, tty_port='/dev/ttyUSB0'):
+        self.baudrate = baudrate
+        self.port = tty_port
 
     def set_baudrate(self, current_baudrate=115200, baudrate=9600):
         ser = serial.Serial(
@@ -54,7 +53,7 @@ class Kindermann:
     def send_command(self, key):
         ser = serial.Serial(
             port=self.port,
-            baudrate=115200,
+            baudrate=self.baudrate,
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS
