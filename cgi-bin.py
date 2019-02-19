@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import cgi
+import os
 from time import localtime, strftime
 
 from epson.epson import Epson
@@ -13,11 +14,12 @@ epson_information = {
     "ZOOM": 'Zoom:ASPECT 50:#A99617',
     "THROUGH": 'Through:ASPECT 60:#A99617',
     "SYNC": 'Syncing ... :KEY 4A:#A99617',
-    "VGA": 'Input Laptop:SOURCE 1F:#A99617',
-    "HDMI1": 'Input Pult:SOURCE 30:#A99617',
-    "HDMI2": 'Input HDMI:SOURCE A0:#A99617',
-    "HDBASET": 'Input HDMI:SOURCE 80:#A99617',
-    "MUTE": 'Mute xx:MUTE ON:#F59554',
+    "VGA": 'Input VGA:SOURCE 1F:#A99617',
+    "HDMI1": 'Input HDMI1:SOURCE 30:#A99617',
+    "HDMI2": 'Input HDMI2:SOURCE A0:#A99617',
+    "HDBASET": 'Input HDBaseT:SOURCE 80:#A99617',
+    "MUTE": 'Mute ON:MUTE ON:#F59554',
+    "MUTEOFF": 'Mute OFF:MUTE OFF:#F59554',
     "VOLOFF": 'Audio off:VOL 0:#F00000',
     "VOL1": 'Audio  1:VOL 1:#F5BCA9',
     "VOL2": 'Audio  2:VOL 2:#F5BCA9',
@@ -62,14 +64,40 @@ def get_message(key):
     return epson_information[key].split(':')[0]
 
 
+def toggle_mute(on=False):
+    mutefile = './mutefile'
+
+    if on:
+        # if beamer is switched on we have to delete the old mute status
+        os.remove(mutefile)
+        return
+
+    if not os.path.isfile(mutefile):
+        with open(mutefile, "w+") as file:
+            file.write('this is a tmp_file')
+        return False
+    else:
+        os.remove(mutefile)
+        return True
+
+
 def execute_funktion(key):
     epson = Epson()
     kindermann = Kindermann()
 
     if key not in kindermann_commands:
-        epson.send_command(key)
+        if key == 'MUTE':
+            if toggle_mute():
+                # if toggle_mute, the projector has to be muted
+                epson.send_command('MUTE')
+            else:
+                # else the projector is already in mute and has to be unmuted
+                epson.send_command('MUTEOFF')
+        else:
+            epson.send_command(key)
     else:
         if key == 'ON':
+            toggle_mute(on=True) # delete old status of the mute command
             kindermann.send_command('SHOW_ME')
             epson.send_command('ON')
             epson.send_command('ON')
