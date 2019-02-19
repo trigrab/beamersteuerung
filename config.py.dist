@@ -1,0 +1,7 @@
+tty_port = '/dev/ttyUSB0'
+epson_baud = 9600
+kindermann_baud = 115200
+mutefile = './mutefile'
+cool_down_file = './coolingfile'
+# projector cool down in seconds
+coold_down_time = 15
