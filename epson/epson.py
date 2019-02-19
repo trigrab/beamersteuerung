@@ -1,7 +1,7 @@
 import logging
 import serial
 
-my_dict = {
+epson_information = {
     "NORMAL": 'Normal:ASPECT 00:#A99617',
     "WIDE": 'Wide:ASPECT 20:#A99617',
     "AUTO": 'Auto:ASPECT 30:#A99617',
@@ -14,6 +14,7 @@ my_dict = {
     "HDMI2": 'Input HDMI:SOURCE A0:#A99617',
     "HDBASET": 'Input HDMI:SOURCE 80:#A99617',
     "MUTE": 'Mute:MUTE ON:#F59554',
+    "MUTEOFF": 'Mute OFF:MUTE OFF:#F59554',
     "VOLOFF": 'Audio off:VOL 0:#F00000',
     "VOL1": 'Audio  1:VOL 1:#F5BCA9',
     "VOL2": 'Audio  2:VOL 2:#F5BCA9',
@@ -70,7 +71,7 @@ class Epson:
 
     @staticmethod
     def _get_bytearray_command(key):
-        s = my_dict[key].split(':')[1]
+        s = epson_information[key].split(':')[1]
         b = bytearray()
         b.extend(map(ord, s))
         b.extend(map(ord, '\r\n'))
