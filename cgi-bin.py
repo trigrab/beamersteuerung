@@ -67,7 +67,7 @@ def get_message(key):
 def toggle_mute(on=False):
     mutefile = './mutefile'
 
-    if on:
+    if on and os.path.isfile(mutefile):
         # if beamer is switched on we have to delete the old mute status
         os.remove(mutefile)
         return
@@ -93,6 +93,7 @@ def execute_funktion(key):
             else:
                 # else the projector is already in mute and has to be unmuted
                 epson.send_command('MUTEOFF')
+                key = 'MUTEOFF'
         else:
             epson.send_command(key)
     else:
