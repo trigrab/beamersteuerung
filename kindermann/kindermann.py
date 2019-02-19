@@ -50,7 +50,7 @@ class Kindermann:
         ser.flush()
         ser.close()
 
-    def send_command(self):
+    def send_command(self, key):
         ser = serial.Serial(
             port=self.port,
             baudrate=115200,
@@ -60,7 +60,7 @@ class Kindermann:
         )
         logging.warning(ser.isOpen())
 
-        command = commands['vga']
+        command = commands[key]
         ser.write(command)
         ser.flush()
         test = ''
