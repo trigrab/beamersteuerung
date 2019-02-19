@@ -63,9 +63,4 @@ class Kindermann:
         command = commands[key]
         ser.write(command)
         ser.flush()
-        test = ''
-        while ser.in_waiting:
-            test += ser.readline()
         ser.close()
-        if test != '':
-            logging.warning(test)

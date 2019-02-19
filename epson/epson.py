@@ -1,7 +1,7 @@
 import logging
 import serial
 
-epson_information = {
+epson_information = {  # this has the format "MESSAGE:SERIAL_COMMAND:HTML_COLOR_CODE"
     "NORMAL": 'Normal:ASPECT 00:#A99617',
     "WIDE": 'Wide:ASPECT 20:#A99617',
     "AUTO": 'Auto:ASPECT 30:#A99617',
@@ -61,12 +61,7 @@ class Epson:
         ser.write(command)
 
         ser.flush()
-        test = ''
-        while ser.in_waiting:
-            test += ser.readline()
         ser.close()
-        if test != '':
-            logging.warning(test)
 
     @staticmethod
     def _get_bytearray_command(key):
