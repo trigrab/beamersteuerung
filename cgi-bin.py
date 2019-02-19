@@ -38,10 +38,10 @@ def toggle_mute(on=False):
     if not os.path.isfile(mutefile):
         with open(mutefile, "w+") as file:
             file.write('this is a tmp_file')
-        return False
+        return True
     else:
         os.remove(mutefile)
-        return True
+        return False
 
 
 def execute_funktion(key):
