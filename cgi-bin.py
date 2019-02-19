@@ -55,11 +55,11 @@ def get_html(key):
 
 
 def get_color(key):
-    return epson_information[key][2]
+    return epson_information[key].split(':')[2]
 
 
 def get_message(key):
-    return epson_information[key][0]
+    return epson_information[key].split(':')[0]
 
 
 def execute_funktion(key):
