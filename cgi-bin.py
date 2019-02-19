@@ -47,6 +47,7 @@ epson_information = {
 
 kindermann_commands = ['ON', 'HDMI1', 'HDMI2', 'VGA']
 
+
 def get_html(key):
     # Rueckmeldung an rufende Seite
     time = strftime('%H:%M:%S', localtime())
@@ -87,18 +88,13 @@ def execute_funktion(key):
 
     if key not in kindermann_commands:
         if key == 'MUTE':
-            if toggle_mute():
-                # if toggle_mute, the projector has to be muted
-                epson.send_command('MUTE')
-            else:
-                # else the projector is already in mute and has to be unmuted
-                epson.send_command('MUTEOFF')
+            if not toggle_mute():
+                # if not toggle_mute, the projector is already in mute and has to be unmuted
                 key = 'MUTEOFF'
-        else:
-            epson.send_command(key)
+        epson.send_command(key)
     else:
         if key == 'ON':
-            toggle_mute(on=True) # delete old status of the mute command
+            toggle_mute(on=True)  # delete old status of the mute command
             kindermann.send_command('SHOW_ME')
             epson.send_command('ON')
             epson.send_command('ON')
