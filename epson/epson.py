@@ -12,6 +12,7 @@ my_dict = {
     "LAPTOP": 'Input Laptop:SOURCE 1F:#A99617',
     "PULT": 'Input Pult:SOURCE 30:#A99617',
     "HDMI": 'Input HDMI:SOURCE A0:#A99617',
+    "HDBASET": 'Input HDMI:SOURCE HDBaseT:#A99617',
     "MUTE": 'Mute xx:MUTE ON:#F59554',
     "VOLOFF": 'Audio off:VOL 0:#F00000',
     "VOL1": 'Audio  1:VOL 1:#F5BCA9',
