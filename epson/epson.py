@@ -59,9 +59,6 @@ class Epson:
         command = self._get_bytearray_command(key)
         ser.write(command)
 
-        command = self._get_hex_code(key)
-
-        ser.write(command)
         ser.flush()
         test = ''
         while ser.in_waiting:
@@ -71,16 +68,9 @@ class Epson:
             logging.warning(test)
 
     @staticmethod
-    def _get_hex_code(key):
-        hex_str = my_dict[key].split(':')[2]
-        hex_str = hex_str[1:]
-        hex_list = [hex_str[i:i + 2] for i in range(0, len(hex_str), 2)]
-        hex_list = [int('0x' + x, 16) for x in hex_list]
-        return hex_list
-
-    @staticmethod
     def _get_bytearray_command(key):
         s = my_dict[key].split(':')[1]
         b = bytearray()
         b.extend(map(ord, s))
+        b.extend(map(ord, '\r\n'))
         return b
