@@ -29,9 +29,10 @@ def get_message(key):
 def toggle_mute(on=False):
     mutefile = './mutefile'
 
-    if on and os.path.isfile(mutefile):
-        # if beamer is switched on we have to delete the old mute status
-        os.remove(mutefile)
+    if on:
+        if os.path.isfile(mutefile):
+            # if beamer is switched on we have to delete the old mute status
+            os.remove(mutefile)
         return
 
     if not os.path.isfile(mutefile):
