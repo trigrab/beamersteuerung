@@ -11,7 +11,7 @@ epson_information = {  # this has the format "MESSAGE:SERIAL_COMMAND:HTML_COLOR_
     "SYNC": 'Syncing ... :KEY 4A:#A99617',
     "VGA": 'Input VGA:SOURCE 1F:#A99617',
     "HDMI1": 'Input HDMI1:SOURCE 30:#A99617',
-    "HDMI2": 'Input HDM2I:SOURCE A0:#A99617',
+    "HDMI2": 'Input HDMI2:SOURCE A0:#A99617',
     "HDBASET": 'Input HDBaseT:SOURCE 80:#A99617',
     "MUTE": 'Mute on:MUTE ON:#F59554',
     "MUTEOFF": 'Mute off:MUTE OFF:#F59554',
