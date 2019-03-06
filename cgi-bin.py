@@ -5,7 +5,6 @@ from datetime import timedelta, datetime
 
 from config import *
 
-from time import strftime
 from epson.epson import Epson, epson_information
 from kindermann.kindermann import Kindermann
 
@@ -24,8 +23,8 @@ def get_html(key):
     :return: html code
     """
     if key == 'COOL_DOWN':
-        time_since_cooldown = datetime.now() - datetime.fromtimestamp(
-            os.path.getctime(cool_down_file))
+        time_since_cooldown = timedelta(seconds=coold_down_time) - (
+                    datetime.now() - datetime.fromtimestamp(os.path.getctime(cool_down_file)))
         return '<font size="5" color="#FF0000">' \
                'Still cooling for {} seconds ...</font>'.format(str(time_since_cooldown))
     else:
@@ -89,7 +88,7 @@ def projector_cooling_down(switch_off=False):
 
     if os.path.isfile(cool_down_file):
         if datetime.fromtimestamp(os.path.getctime(cool_down_file)) + timedelta(
-                seconds=coold_down_time) > datetime.now():
+                seconds=coold_down_time) < datetime.now():
             # projector was cooling down, but does not have to cool down any more
             os.remove(cool_down_file)
             return False
