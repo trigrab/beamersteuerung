@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 import cgi
 import os
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from config import *
 
-from time import localtime, strftime
+from time import strftime
 from epson.epson import Epson, epson_information
 from kindermann.kindermann import Kindermann
 
@@ -24,12 +24,13 @@ def get_html(key):
     :return: html code
     """
     if key == 'COOL_DOWN':
-        time_since_cooldown = os.path.getctime(cool_down_file) - localtime()
+        time_since_cooldown = datetime.now() - datetime.fromtimestamp(
+            os.path.getctime(cool_down_file))
         return '<font size="5" color="#FF0000">' \
-               'Still cooling for {} seconds ...</font>'.format(time_since_cooldown)
+               'Still cooling for {} seconds ...</font>'.format(str(time_since_cooldown))
     else:
         # Rueckmeldung an rufende Seite
-        current_time = strftime('%H:%M:%S', localtime())
+        current_time = datetime.now().strftime("%H:%M:%S")
         color = get_color(key)
         message = get_message(key)
         return '<font size="3">Last Action at {}</font>' \
@@ -87,7 +88,8 @@ def projector_cooling_down(switch_off=False):
             return False
 
     if os.path.isfile(cool_down_file):
-        if os.path.getctime(cool_down_file) + timedelta(seconds=coold_down_time) > localtime():
+        if datetime.fromtimestamp(os.path.getctime(cool_down_file)) + timedelta(
+                seconds=coold_down_time) > datetime.now():
             # projector was cooling down, but does not have to cool down any more
             os.remove(cool_down_file)
             return False
@@ -141,7 +143,8 @@ def execute_funktion(key):
             switched_on = switch_projector_on(epson, kindermann)
             if not switched_on:
                 key = 'COOL_DOWN'
-            epson.send_command('VOL15')  # set default volume for epson to 15
+            else:
+                epson.send_command('VOL15')  # set default volume for epson to 15
         elif key == 'OFF':
             projector_cooling_down(switch_off=True)
             epson.send_command(key)
