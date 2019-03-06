@@ -141,6 +141,7 @@ def execute_funktion(key):
             switched_on = switch_projector_on(epson, kindermann)
             if not switched_on:
                 key = 'COOL_DOWN'
+            epson.send_command('VOL15')  # set default volume for epson to 15
         elif key == 'OFF':
             projector_cooling_down(switch_off=True)
             epson.send_command(key)
