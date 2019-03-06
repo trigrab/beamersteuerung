@@ -121,7 +121,7 @@ def execute_funktion(key):
     :return: None
     """
     epson = Epson(baudrate=epson_baud, tty_port=tty_port)
-    kindermann = Kindermann(baudrate=epson_baud, tty_port=tty_port)
+    kindermann = Kindermann(baudrate=kindermann_baud, tty_port=tty_port)
 
     if key not in kindermann_commands:
         if key == 'MUTE':
