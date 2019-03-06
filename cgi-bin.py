@@ -10,6 +10,7 @@ from epson.epson import Epson, epson_information
 from kindermann.kindermann import Kindermann
 
 kindermann_commands = ['ON',
+                       'OFF',
                        'HDMI1',
                        'HDMI2',
                        'VGA'
@@ -74,11 +75,17 @@ def projector_muted(on=False):
         return False
 
 
-def projector_cooling_down():
+def projector_cooling_down(switch_off=False):
     """
     Should the projector be switched on with notice to the cool down setting (cool_down_time)
     :return: True if projector can be switched on
     """
+
+    if switch_off:
+        with open(cool_down_file, "w+") as file:
+            file.write('this is a tmp_file')
+            return False
+
     if os.path.isfile(cool_down_file):
         if os.path.getctime(cool_down_file) + timedelta(seconds=coold_down_time) > localtime():
             # projector was cooling down, but does not have to cool down any more
@@ -134,6 +141,9 @@ def execute_funktion(key):
             switched_on = switch_projector_on(epson, kindermann)
             if not switched_on:
                 key = 'COOL_DOWN'
+        elif key == 'OFF':
+            projector_cooling_down(switch_off=True)
+            epson.send_command(key)
         else:
             kindermann.send_command(key)
             epson.send_command('HDBASET')
