@@ -23,12 +23,11 @@ def get_html(key):
     :return: html code
     """
     if key == 'COOL_DOWN':
-        time_since_cooldown = -1 * (cool_down_time - (
-                                        datetime.now() -
-                                        datetime.fromtimestamp(os.path.getctime(cool_down_file))
-                                   ).seconds)
+        time_since_cooldown = datetime.now() - \
+                              datetime.fromtimestamp(os.path.getctime(cool_down_file))
+        time_to_cool_down = cool_down_time - time_since_cooldown.seconds
         return '<font size="5" color="#FF0000">' \
-               'Still cooling for {} seconds ...</font>'.format(str(time_since_cooldown))
+               'Still cooling for {} seconds ...</font>'.format(str(time_to_cool_down))
     else:
         # Rueckmeldung an rufende Seite
         current_time = datetime.now().strftime("%H:%M:%S")
@@ -93,13 +92,13 @@ def projector_cooling_down(switch_off=False):
         if cooling_file_change_time <= datetime.now() + timedelta(seconds=cool_down_time):
             # projector was cooling down, but does not have to cool down any more
             os.remove(cool_down_file)
-            return False
+            return True
         else:
             # projector is cooling down
-            return True
+            return False
     else:
         # projector is not cooling down
-        return False
+        return True
 
 
 def switch_projector_on(epson, kindermann):
