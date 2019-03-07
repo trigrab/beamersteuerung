@@ -79,26 +79,26 @@ def projector_muted(on=False):
 def projector_cooling_down(switch_off=False):
     """
     Should the projector be switched on with notice to the cool down setting (cool_down_time)
-    :return: True if projector can be switched on
+    :return: True if has to cool down
     """
 
     if switch_off:
         with open(cool_down_file, "w+") as file:
             file.write('this is a tmp_file')
-            return False
+            return True
 
     if os.path.isfile(cool_down_file):
         cooling_file_change_time = datetime.fromtimestamp(os.path.getctime(cool_down_file))
-        if cooling_file_change_time <= datetime.now() + timedelta(seconds=cool_down_time):
+        if cooling_file_change_time + timedelta(seconds=cool_down_time) <= datetime.now():
             # projector was cooling down, but does not have to cool down any more
             os.remove(cool_down_file)
-            return True
+            return False
         else:
             # projector is cooling down
-            return False
+            return True
     else:
         # projector is not cooling down
-        return True
+        return False
 
 
 def switch_projector_on(epson, kindermann):
@@ -110,17 +110,17 @@ def switch_projector_on(epson, kindermann):
     """
     if projector_cooling_down():
         return False
-    else:
-        projector_muted(on=True)  # delete old status of the mute command
-        kindermann.send_command('SHOW_ME')
-        epson.send_command('ON')  # directly after kindermann is switched on, we need to send
-        epson.send_command('ON')  # this command multiple time to epson, otherwise it will
-        epson.send_command('ON')  # not be executed.
-        epson.send_command('ON')
-        epson.send_command('ON')
-        epson.send_command('ON')
-        epson.send_command('HDBASET')
-        return True
+
+    projector_muted(on=True)  # delete old status of the mute command
+    kindermann.send_command('SHOW_ME')
+    epson.send_command('ON')  # directly after kindermann is switched on, we need to send
+    epson.send_command('ON')  # this command multiple time to epson, otherwise it will
+    epson.send_command('ON')  # not be executed.
+    epson.send_command('ON')
+    epson.send_command('ON')
+    epson.send_command('ON')
+    epson.send_command('HDBASET')
+    return True
 
 
 def execute_funktion(key):
