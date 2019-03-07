@@ -23,8 +23,10 @@ def get_html(key):
     :return: html code
     """
     if key == 'COOL_DOWN':
-        time_since_cooldown = timedelta(seconds=coold_down_time) - (
-                    datetime.now() - datetime.fromtimestamp(os.path.getctime(cool_down_file)))
+        time_since_cooldown = -1 * (cool_down_time - (
+                                        datetime.now() -
+                                        datetime.fromtimestamp(os.path.getctime(cool_down_file))
+                                   ).seconds)
         return '<font size="5" color="#FF0000">' \
                'Still cooling for {} seconds ...</font>'.format(str(time_since_cooldown))
     else:
@@ -87,8 +89,8 @@ def projector_cooling_down(switch_off=False):
             return False
 
     if os.path.isfile(cool_down_file):
-        if datetime.fromtimestamp(os.path.getctime(cool_down_file)) + timedelta(
-                seconds=coold_down_time) < datetime.now():
+        cooling_file_change_time = datetime.fromtimestamp(os.path.getctime(cool_down_file))
+        if cooling_file_change_time <= datetime.now() + timedelta(seconds=cool_down_time):
             # projector was cooling down, but does not have to cool down any more
             os.remove(cool_down_file)
             return False
