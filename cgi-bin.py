@@ -4,6 +4,10 @@ import os
 from datetime import timedelta, datetime
 
 from config import *
+if 'warm_up_time' not in locals():
+    warm_up_time = 60
+if 'warm_up_file' not in locals():
+    warm_up_file = './warmupfile'
 
 from epson.epson import Epson, epson_information
 from kindermann.kindermann import Kindermann
@@ -28,6 +32,8 @@ def get_html(key):
         time_to_cool_down = cool_down_time - time_since_cooldown.seconds
         return '<font size="5" color="#FF0000">' \
                'Still cooling for {} seconds ...</font>'.format(str(time_to_cool_down))
+    elif key == 'INIT':
+        projector_cooling_down(switch_off=True)
     else:
         # Rueckmeldung an rufende Seite
         current_time = datetime.now().strftime("%H:%M:%S")
@@ -73,6 +79,26 @@ def projector_muted(on=False):
         return True
     else:
         os.remove(mutefile)
+        return False
+
+
+def projector_warming_up(switch_on=False):
+    if switch_on:
+        with open(warm_up_file, "w+") as file:
+            file.write('this is a tmp_file')
+            return True
+
+    if os.path.isfile(warm_up_file):
+        warm_up_file_change_time = datetime.fromtimestamp(os.path.getctime(cool_down_file))
+        if warm_up_file_change_time + timedelta(seconds=warm_up_time) <= datetime.now():
+            # projector was warming up, but does not have to any more
+            os.remove(warm_up_file)
+            return False
+        else:
+            # projector is warming up
+            return True
+    else:
+        # projector is not warming up
         return False
 
 
@@ -144,9 +170,12 @@ def execute_funktion(key):
             if not switched_on:
                 key = 'COOL_DOWN'
             else:
+                projector_warming_up(switch_on=True)
                 epson.send_command('VOL15')  # set default volume for epson to 15
         elif key == 'OFF':
             projector_cooling_down(switch_off=True)
+            if projector_warming_up():
+                key = 'WARM_UP'
             epson.send_command(key)
         else:
             kindermann.send_command(key)

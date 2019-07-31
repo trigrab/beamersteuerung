@@ -5,3 +5,7 @@ mutefile = './mutefile'
 cool_down_file = './coolingfile'
 # projector cool down in seconds
 cool_down_time = 15
+# projector warm up in seconds
+warm_up_time = 60
+warm_up_file = './warmupfile'
+

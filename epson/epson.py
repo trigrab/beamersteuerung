@@ -37,7 +37,8 @@ epson_information = {  # this has the format "MESSAGE:SERIAL_COMMAND:HTML_COLOR_
     "VOL19": 'Audio 19:VOL 241:#F5BCA9',
     "VOLMAX": 'Audio max:VOL 255:#F00000',
     "ON": 'Beamer on:PWR ON:#00A000',
-    "OFF": 'Beamer off:PWR OFF:#F00000'
+    "OFF": 'Beamer off:PWR OFF:#F00000',
+    "WARM_UP": 'Beamer is still warming up: PWR OFF:#F00000',
 }
 
 
