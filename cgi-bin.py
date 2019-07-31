@@ -83,6 +83,10 @@ def projector_muted(on=False):
 
 
 def projector_warming_up(switch_on=False):
+    """
+    Is the projector stil in warm up with notice to the warm up setting (warm_up_time)
+    :return: True if still has to warm up
+    """
     if switch_on:
         with open(warm_up_file, "w+") as file:
             file.write('this is a tmp_file')
