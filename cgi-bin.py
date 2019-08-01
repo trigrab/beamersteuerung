@@ -93,7 +93,7 @@ def projector_warming_up(switch_on=False):
             return True
 
     if os.path.isfile(warm_up_file):
-        warm_up_file_change_time = datetime.fromtimestamp(os.path.getctime(cool_down_file))
+        warm_up_file_change_time = datetime.fromtimestamp(os.path.getctime(warm_up_file))
         if warm_up_file_change_time + timedelta(seconds=warm_up_time) <= datetime.now():
             # projector was warming up, but does not have to any more
             os.remove(warm_up_file)
