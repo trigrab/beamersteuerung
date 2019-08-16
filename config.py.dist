@@ -8,4 +8,7 @@ cool_down_time = 15
 # projector warm up in seconds
 warm_up_time = 60
 warm_up_file = './warmupfile'
+kindermann_commands = ['ON',
+                       'OFF',
+                       ]  # commands that aren't only executed by epson
 

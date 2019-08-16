@@ -8,16 +8,11 @@ if 'warm_up_time' not in locals():
     warm_up_time = 60
 if 'warm_up_file' not in locals():
     warm_up_file = './warmupfile'
+if 'kindermann_commands' not in locals():
+    kindermann_commands = ['ON', 'OFF']
 
 from epson.epson import Epson, epson_information
 from kindermann.kindermann import Kindermann
-
-kindermann_commands = ['ON',
-                       'OFF',
-                       'HDMI1',
-                       'HDMI2',
-                       'VGA'
-                       ]  # commands that aren't only executed by epson
 
 
 def get_html(key):
