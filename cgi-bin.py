@@ -11,9 +11,10 @@ if 'warm_up_file' not in locals():
 if 'kindermann_commands' not in locals():
     kindermann_commands = ['ON', 'OFF']
 
-from epson.epson import Epson, epson_information
+from epson.epson import Epson
 from kindermann.kindermann import Kindermann
 
+epson = Epson(baudrate=epson_baud, tty_port=tty_port)
 
 def get_html(key):
     """
@@ -44,7 +45,7 @@ def get_color(key):
     :param key: used function
     :return:  html color code as str
     """
-    return epson_information[key].split(':')[2]
+    return epson.epson_information[key].split(':')[2]
 
 
 def get_message(key):
@@ -53,7 +54,7 @@ def get_message(key):
     :param key: used function
     :return: message as str
     """
-    return epson_information[key].split(':')[0]
+    return epson.epson_information[key].split(':')[0]
 
 
 def projector_muted(on=False):
@@ -154,7 +155,7 @@ def execute_funktion(key):
     :param key: function from controlling website
     :return: None
     """
-    epson = Epson(baudrate=epson_baud, tty_port=tty_port)
+
     kindermann = Kindermann(baudrate=kindermann_baud, tty_port=tty_port)
 
     if key not in kindermann_commands:
