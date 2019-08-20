@@ -15,3 +15,7 @@ There may be other predefined examples in epson/
 '''
 epson_config_class_name = 'epson_information'
 epson_config_file_name = 'epson_default_config'
+kindermann_commands = ['ON',
+                       'OFF',
+                       ]  # commands that aren't only executed by epson
+

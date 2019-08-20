@@ -8,16 +8,11 @@ if 'warm_up_time' not in locals():
     warm_up_time = 60
 if 'warm_up_file' not in locals():
     warm_up_file = './warmupfile'
+if 'kindermann_commands' not in locals():
+    kindermann_commands = ['ON', 'OFF']
 
 from epson.epson import Epson, epson_information
 from kindermann.kindermann import Kindermann
-
-kindermann_commands = ['ON',
-                       'OFF',
-                       'HDMI1',
-                       'HDMI2',
-                       'VGA'
-                       ]  # commands that aren't only executed by epson
 
 
 def get_html(key):
@@ -93,7 +88,7 @@ def projector_warming_up(switch_on=False):
             return True
 
     if os.path.isfile(warm_up_file):
-        warm_up_file_change_time = datetime.fromtimestamp(os.path.getctime(cool_down_file))
+        warm_up_file_change_time = datetime.fromtimestamp(os.path.getctime(warm_up_file))
         if warm_up_file_change_time + timedelta(seconds=warm_up_time) <= datetime.now():
             # projector was warming up, but does not have to any more
             os.remove(warm_up_file)
